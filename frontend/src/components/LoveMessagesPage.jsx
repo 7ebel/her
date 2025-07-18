@@ -19,7 +19,7 @@ const LoveMessagesPage = () => {
     setShowMessage(false);
     
     // Generate sparkles
-    const newSparkles = Array.from({ length: 12 }, (_, i) => ({
+    const newSparkles = Array.from({ length: 4 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
