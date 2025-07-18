@@ -7,20 +7,17 @@ const LoveMessagesPage = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [heartScale, setHeartScale] = useState(1);
   const [sparkles, setSparkles] = useState([]);
-
-  useEffect(() => {
-    // Set initial message
-    setCurrentMessage(mockMessages[0]);
-  }, []);
+  const [showMessage, setShowMessage] = useState(false);
+  const [messagePosition, setMessagePosition] = useState({ x: 0, y: 0 });
 
   const handleHeartClick = () => {
     if (isAnimating) return;
     
     setIsAnimating(true);
-    setHeartScale(1.2);
+    setHeartScale(1.15);
     
     // Generate sparkles
-    const newSparkles = Array.from({ length: 8 }, (_, i) => ({
+    const newSparkles = Array.from({ length: 12 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -29,14 +26,26 @@ const LoveMessagesPage = () => {
     }));
     setSparkles(newSparkles);
     
+    // Random message position around the heart
+    const randomAngle = Math.random() * 360;
+    const distance = 200 + Math.random() * 100;
+    const x = Math.cos(randomAngle * Math.PI / 180) * distance;
+    const y = Math.sin(randomAngle * Math.PI / 180) * distance;
+    
+    setMessagePosition({ x, y });
+    
     setTimeout(() => {
       const randomIndex = Math.floor(Math.random() * mockMessages.length);
       setCurrentMessage(mockMessages[randomIndex]);
+      setShowMessage(true);
       setHeartScale(1);
       setIsAnimating(false);
       
       // Clear sparkles after animation
       setTimeout(() => setSparkles([]), 1000);
+      
+      // Hide message after 4 seconds
+      setTimeout(() => setShowMessage(false), 4000);
     }, 300);
   };
 
@@ -44,7 +53,7 @@ const LoveMessagesPage = () => {
     <div className="love-page">
       <div className="love-container">
         <div className="decorative-hearts">
-          {Array.from({ length: 12 }).map((_, i) => (
+          {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
               className="floating-heart"
@@ -52,24 +61,15 @@ const LoveMessagesPage = () => {
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${6 + Math.random() * 4}s`,
+                animationDuration: `${8 + Math.random() * 4}s`,
               }}
             >
-              <Heart size={8 + Math.random() * 12} />
+              <Heart size={6 + Math.random() * 8} />
             </div>
           ))}
         </div>
 
         <div className="main-content">
-          <div className="title-section">
-            <h1 className="love-title">
-              Messages of Love
-            </h1>
-            <p className="love-subtitle">
-              Touch the heart to discover beautiful messages
-            </p>
-          </div>
-
           <div className="heart-container">
             <div 
               className={`interactive-heart ${isAnimating ? 'pulse' : ''}`}
@@ -77,7 +77,7 @@ const LoveMessagesPage = () => {
               style={{ transform: `scale(${heartScale})` }}
             >
               <Heart 
-                size={120} 
+                size={200} 
                 className="heart-icon" 
                 fill="currentColor"
               />
@@ -92,30 +92,27 @@ const LoveMessagesPage = () => {
                     transform: `rotate(${sparkle.rotation}deg) scale(${sparkle.scale})`,
                   }}
                 >
-                  <Sparkles size={16} />
+                  <Sparkles size={20} />
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="message-container">
-            <div className="message-card">
-              <div className="message-content">
+          {showMessage && (
+            <div 
+              className="message-bubble"
+              style={{
+                transform: `translate(${messagePosition.x}px, ${messagePosition.y}px)`,
+              }}
+            >
+              <div className="bubble-content">
                 <p className="love-message">
                   {currentMessage}
                 </p>
               </div>
-              <div className="message-decoration">
-                <Heart size={20} className="message-heart" />
-              </div>
+              <div className="bubble-tail"></div>
             </div>
-          </div>
-
-          <div className="interaction-hint">
-            <p className="hint-text">
-              💕 Click the heart to see more loving messages 💕
-            </p>
-          </div>
+          )}
         </div>
       </div>
     </div>
