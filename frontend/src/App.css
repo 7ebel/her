@@ -127,8 +127,9 @@
 
 .message-bubble {
   position: absolute;
+  bottom: 120%;
   left: 50%;
-  top: 50%;
+  transform: translateX(-50%);
   z-index: 10;
   animation: bubbleAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   pointer-events: none;
@@ -137,11 +138,11 @@
 @keyframes bubbleAppear {
   0% {
     opacity: 0;
-    transform: scale(0.3) translateY(20px);
+    transform: translateX(-50%) translateY(20px) scale(0.8);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 }
 
@@ -150,9 +151,10 @@
   backdrop-filter: blur(20px);
   border-radius: 25px;
   padding: 1.5rem 2rem;
-  max-width: 300px;
+  max-width: 320px;
+  min-width: 200px;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 
               0 0 0 1px rgba(255, 255, 255, 0.5) inset;
   border: 1px solid rgba(236, 64, 122, 0.2);
 }
@@ -171,26 +173,26 @@
 
 .bubble-tail {
   position: absolute;
-  bottom: -10px;
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-top: 12px solid rgba(255, 255, 255, 0.95);
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid rgba(255, 255, 255, 0.95);
 }
 
 .bubble-tail::before {
   content: '';
   position: absolute;
-  bottom: 2px;
-  left: -13px;
+  top: -17px;
+  left: -16px;
   width: 0;
   height: 0;
-  border-left: 13px solid transparent;
-  border-right: 13px solid transparent;
-  border-top: 13px solid rgba(236, 64, 122, 0.2);
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 16px solid rgba(236, 64, 122, 0.2);
 }
 
 .love-message {
